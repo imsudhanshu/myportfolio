@@ -83,9 +83,18 @@ const contributionVariants = {
   }
 };
 
+const floatHover = {
+  hover: {
+    y: -6,
+    scale: 1.01,
+    boxShadow: "0 30px 60px rgba(59, 130, 246, 0.12)",
+    transition: { duration: 0.25 }
+  }
+};
+
 export default function Home() {
   return (
-    <main className="relative bg-black text-white min-h-screen px-6 md:px-20 py-10 space-y-32 overflow-hidden">
+    <main className="relative bg-black text-white min-h-screen px-4 sm:px-6 md:px-20 py-10 space-y-32 overflow-hidden">
 
       {/* BACKGROUND GLOW */}
       <div className="absolute top-[-150px] left-[-150px] w-[500px] h-[500px] bg-purple-600 opacity-30 blur-[150px] animate-pulse"></div>
@@ -95,23 +104,39 @@ export default function Home() {
       <motion.section variants={container} initial="hidden" animate="show">
         <motion.div
           variants={item}
-          className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] rounded-[40px] border border-white/10 bg-white/5 p-8 backdrop-blur-xl shadow-[0_40px_120px_rgba(71,0,128,0.18)]"
+          className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] rounded-[40px] border border-white/10 bg-white/5 p-6 sm:p-8 backdrop-blur-xl shadow-[0_40px_120px_rgba(71,0,128,0.18)]"
         >
           <div className="space-y-6 text-left">
-            <motion.h1
+            <motion.div
               variants={item}
-              className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
+              className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6"
             >
-              Sudhanshu Mishra
-            </motion.h1>
+              {/* <div className="h-32 w-32 overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                <Image
+                  src="/profile.jpeg"
+                  alt="Sudhanshu Mishra"
+                  width={128}
+                  height={144}
+                  className="h-full w-full object-cover"
+                />
+              </div> */}
+              <div className="min-w-0">
+                <motion.h1
+                  variants={item}
+                  className="text-5xl sm:text-6xl md:text-7xl font-bold bg-gradient-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent leading-tight"
+                >
+                  Sudhanshu Mishra
+                </motion.h1>
 
-            <motion.p variants={item} className="text-gray-400 mt-2 text-lg">
-              Sr. Software Engineer
-            </motion.p>
+                <motion.p variants={item} className="text-gray-400 mt-2 text-lg">
+                  Sr. Software Engineer
+                </motion.p>
+              </div>
+            </motion.div>
 
             <motion.div
             variants={item}
-            className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md"
+            className="rounded-3xl border border-white/10 bg-white/5 p-6 sm:p-8 backdrop-blur-md"
           >
             <h2 className="text-3xl font-semibold">Profile Summary</h2>
             <p className="text-gray-300 mt-4 leading-relaxed">
@@ -124,12 +149,12 @@ export default function Home() {
           </div>
           <motion.div
               variants={item}
-              className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-md"
+              className="rounded-3xl border border-white/10 bg-white/5 p-6 sm:p-8 backdrop-blur-md"
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h2 className="text-3xl font-semibold">Connect</h2>
-                  <p className="text-gray-400 mt-2 max-w-xl">
+                  <p className="text-gray-400 mt-2 max-w-full">
                     Reach out for freelance work, collaboration, or your next engineering role.
                   </p>
                 </div>
@@ -140,7 +165,7 @@ export default function Home() {
                   href="https://www.linkedin.com/in/sudhanshu-mishra-a38608147/"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-200 hover:bg-blue-500/15 transition"
+                  className="flex w-full min-w-0 items-center justify-center gap-3 px-5 py-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-200 hover:bg-blue-500/15 transition"
                 >
                   <FaLinkedin className="text-xl" />
                   LinkedIn Profile
@@ -148,7 +173,7 @@ export default function Home() {
 
                 <a
                   href="mailto:mishrasudhanshu398@gmail.com"
-                  className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-gray-200 hover:bg-white/10 transition"
+                  className="flex w-full min-w-0 items-center justify-center gap-3 px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-gray-200 hover:bg-white/10 transition"
                 >
                   <FaEnvelope className="text-xl" />
                   mishrasudhanshu398@gmail.com
@@ -156,7 +181,7 @@ export default function Home() {
 
                 <a
                   href="/resume.pdf"
-                  className="inline-flex items-center gap-3 px-5 py-4 rounded-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-semibold shadow-lg shadow-violet-500/20 hover:brightness-110 transition"
+                  className="flex w-full min-w-0 items-center justify-center gap-3 px-5 py-4 rounded-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-semibold shadow-lg shadow-violet-500/20 hover:brightness-110 transition"
                   download
                 >
                   <FaDownload className="text-xl" />
@@ -207,6 +232,15 @@ export default function Home() {
               <motion.div
                 key={achievement.title}
                 variants={item}
+                initial="hidden"
+                whileInView="show"
+                whileHover={{
+                  y: -6,
+                  scale: 1.01,
+                  boxShadow: "0 30px 60px rgba(59, 130, 246, 0.12)",
+                  transition: { duration: 0.25 }
+                }}
+                viewport={{ once: true }}
                 className="rounded-3xl border border-white/10 bg-slate-950/80 p-6"
               >
                 <h3 className="text-lg font-semibold text-white">{achievement.title}</h3>
@@ -705,7 +739,10 @@ export default function Home() {
               <motion.div
                 key={project.title}
                 variants={item}
+                whileHover="hover"
+                animate="show"
                 className="p-6 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-md"
+                // variants={floatHover}
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-500/10 text-violet-300 text-lg">
