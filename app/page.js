@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import {
   FaAws,
   FaDocker,
@@ -41,6 +42,10 @@ import {
   SiTrello,
 } from "react-icons/si";
 import SystemDesign from "./system";
+import Terminal from "../components/Terminal";
+import ContactForm from "../components/ContactForm";
+import TerminalBackground from "../components/TerminalBackground";
+import BootSequence from "../components/BootSequence";
 
 const container = {
   hidden: {},
@@ -93,12 +98,44 @@ const floatHover = {
 };
 
 export default function Home() {
+  const [booting, setBooting] = useState(true);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  useEffect(() => {
+    // Fire-and-forget background tracker ping
+    fetch('/api/track', { method: 'POST' }).catch(() => {});
+  }, []);
+
   return (
+    <>
+      <AnimatePresence>
+        {booting && <BootSequence onComplete={() => setBooting(false)} />}
+      </AnimatePresence>
+
+      {!booting && (
     <main className="relative bg-black text-white min-h-screen px-4 sm:px-6 md:px-20 py-10 space-y-32 overflow-hidden">
+      <TerminalBackground />
+      <motion.div
+        style={{ scaleX }}
+        className="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 origin-left z-50 shadow-[0_0_10px_rgba(139,92,246,0.8)]"
+      />
 
       {/* BACKGROUND GLOW */}
-      <div className="absolute top-[-150px] left-[-150px] w-[500px] h-[500px] bg-purple-600 opacity-30 blur-[150px] animate-pulse"></div>
-      <div className="absolute bottom-[-150px] right-[-150px] w-[500px] h-[500px] bg-blue-600 opacity-30 blur-[150px] animate-pulse"></div>
+      <motion.div 
+        animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute top-[-150px] left-[-150px] w-[500px] h-[500px] bg-purple-600/40 opacity-30 blur-[150px] rounded-full"
+      ></motion.div>
+      <motion.div 
+        animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        className="absolute bottom-[-150px] right-[-150px] w-[500px] h-[500px] bg-blue-600/40 opacity-30 blur-[150px] rounded-full"
+      ></motion.div>
 
       {/* HERO + CONTACT */}
       <motion.section variants={container} initial="hidden" animate="show">
@@ -161,35 +198,53 @@ export default function Home() {
               </div>
 
               <div className="mt-8 grid gap-4">
-                <a
+                <motion.a
                   href="https://www.linkedin.com/in/sudhanshu-mishra-a38608147/"
                   target="_blank"
                   rel="noreferrer"
+                  whileHover={{ scale: 1.03, rotate: 1 }}
+                  whileTap={{ scale: 0.97 }}
                   className="flex w-full min-w-0 items-center justify-center gap-3 px-5 py-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-200 hover:bg-blue-500/15 transition"
                 >
                   <FaLinkedin className="text-xl" />
                   LinkedIn Profile
-                </a>
+                </motion.a>
 
-                <a
+                <motion.a
                   href="mailto:mishrasudhanshu398@gmail.com"
+                  whileHover={{ scale: 1.03, rotate: -1 }}
+                  whileTap={{ scale: 0.97 }}
                   className="flex w-full min-w-0 items-center justify-center gap-3 px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-gray-200 hover:bg-white/10 transition"
                 >
                   <FaEnvelope className="text-xl" />
                   mishrasudhanshu398@gmail.com
-                </a>
+                </motion.a>
 
-                <a
+                <motion.a
                   href="/resume.pdf"
+                  whileHover={{ scale: 1.05, y: -2, boxShadow: "0 10px 25px -5px rgba(139, 92, 246, 0.4)" }}
+                  whileTap={{ scale: 0.95 }}
                   className="flex w-full min-w-0 items-center justify-center gap-3 px-5 py-4 rounded-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-semibold shadow-lg shadow-violet-500/20 hover:brightness-110 transition"
                   download
                 >
                   <FaDownload className="text-xl" />
                   Download Resume
-                </a>
+                </motion.a>
               </div>
             </motion.div>
         </motion.div>
+      </motion.section>
+
+      {/* INTERACTIVE TERMINAL */}
+      <motion.section
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+      >
+        <div className="space-y-4">
+          <Terminal />
+        </div>
       </motion.section>
 
       {/* KEY ACHIEVEMENTS */}
@@ -739,10 +794,15 @@ export default function Home() {
               <motion.div
                 key={project.title}
                 variants={item}
-                whileHover="hover"
-                animate="show"
-                className="p-6 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-md"
-                // variants={floatHover}
+                whileHover={{
+                  y: -8,
+                  scale: 1.02,
+                  boxShadow: "0 30px 60px rgba(139, 92, 246, 0.15)",
+                  borderColor: "rgba(139, 92, 246, 0.4)",
+                  transition: { type: "spring", stiffness: 300, damping: 20 }
+                }}
+                className="p-6 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-md transition-colors"
+                // animate="show" is handled by the parent variants staggering, but we removed conflicting animate
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-500/10 text-violet-300 text-lg">
@@ -763,6 +823,8 @@ export default function Home() {
 
       {/* SYSTEM DESIGN DIAGRAMS */}
       <SystemDesign />
+
+
       {/* WHAT I'M WORKING ON */}
       <motion.section
         variants={container}
@@ -812,6 +874,8 @@ export default function Home() {
         </div>
       </motion.section>
 
+
+
       {/* CERTIFICATES & ACHIEVEMENTS */}
       <motion.section
         variants={container}
@@ -853,6 +917,16 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* CONTACT FORM */}
+      <motion.section
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+      >
+        <ContactForm />
+      </motion.section>
+
       {/* FOOTER */}
       <motion.section variants={container} initial="hidden" whileInView="show" viewport={{ once: true }}>
         <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
@@ -874,5 +948,7 @@ export default function Home() {
         </div>
       </motion.section>
     </main>
+      )}
+    </>
   );
 }
