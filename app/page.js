@@ -168,6 +168,17 @@ export default function Home() {
                 <motion.p variants={item} className="text-gray-400 mt-2 text-lg">
                   Sr. Software Engineer
                 </motion.p>
+
+                <motion.div variants={item} className="mt-6 flex flex-wrap gap-3">
+                  <div 
+                    className="font-mono text-sm sm:text-base text-[#00ff00] bg-[#0a0a0a] border border-[#00ff00]/30 px-4 py-2 rounded-xl flex items-center gap-3 shadow-[0_0_15px_rgba(0,255,0,0.1)] hover:shadow-[0_0_20px_rgba(0,255,0,0.2)] transition-shadow cursor-pointer"
+                    onClick={() => navigator.clipboard.writeText('npx imsudhanshu')}
+                    title="Click to copy"
+                  >
+                    <span className="text-gray-500">$</span> npx imsudhanshu
+                    <span className="text-xs text-gray-400 ml-2 border border-white/10 rounded px-2 py-0.5 bg-white/5">Copy</span>
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
 

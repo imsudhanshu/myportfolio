@@ -1,0 +1,21 @@
+{
+  "name": "imsudhanshu",
+  "version": "1.0.0",
+  "description": "Terminal business card for Sudhanshu Mishra",
+  "main": "index.js",
+  "bin": {
+    "imsudhanshu": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "portfolio",
+    "cli",
+    "sudhanshu",
+    "mishra",
+    "npx"
+  ],
+  "author": "Sudhanshu Mishra",
+  "license": "ISC"
+}
